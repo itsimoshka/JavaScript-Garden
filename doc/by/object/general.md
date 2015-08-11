@@ -1,6 +1,6 @@
 ## Выкарыстанне і Ўласцівасці Аб'ектаў
 
-Усё ў JavaScript дзейнічае як аб'ект, з двумя выключэннямі
+Усё ў JavaScript дзейнічае як аб'ект, , апроч двух выключэнняў - гэта
 [`null`](#core.undefined) і [`undefined`](#core.undefined).
 
     false.toString(); // 'false'
