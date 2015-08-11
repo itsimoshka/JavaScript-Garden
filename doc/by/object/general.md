@@ -1,66 +1,66 @@
-## Object Usage and Properties
+## Выкарыстанне і Ўласцівасці Аб'ектаў
 
-Everything in JavaScript acts like an object, with the only two exceptions being 
-[`null`](#core.undefined) and [`undefined`](#core.undefined).
+Усё ў JavaScript дзейнічае як аб'ект, з двумя выключэннямі
+[`null`](#core.undefined) і [`undefined`](#core.undefined).
 
     false.toString(); // 'false'
     [1, 2, 3].toString(); // '1,2,3'
-    
+
     function Foo(){}
     Foo.bar = 1;
     Foo.bar; // 1
 
-A common misconception is that number literals cannot be used as
-objects. That is because a flaw in JavaScript's parser tries to parse the *dot 
-notation* on a number as a floating point literal.
+Частым зманам ёсць тое, што нумары і літэралы не могуць быць выкарыстаны як
+аб'екты. Гэта праз тое, што сінтаксічны аналізатар JavaScript's стараецца прывесці
+*натацыю кропка* на нумары як літэрал з плаваючай кропкай.
 
-    2.toString(); // raises SyntaxError
+    2.toString(); // уздымае SyntaxError
 
-There are a couple of workarounds that can be used to make number literals act
-as objects too.
+Ёсць некалькі падыходаў, якія могуць дазволіць выкарыстаць лікавыя літэралы як
+аб'екты'.
 
-    2..toString(); // the second point is correctly recognized
-    2 .toString(); // note the space left to the dot
-    (2).toString(); // 2 is evaluated first
+    2..toString(); // другая кропка распазнаецца слушна
+    2 .toString(); // заўважце прабел з лева ад кропкі
+    (2).toString(); // 2 распазнаецца першым чынам
 
-### Objects as a Data Type
+### Аб'ект як тып дадзеных
 
-Objects in JavaScript can also be used as [*Hashmaps*][1]; they mainly consist 
-of named properties mapping to values.
+Аб'екты ў JavaScript таксама могуць выкарыстаныя як [*Hashmaps*][1]; яны ў асноўным
+складаюцца з іменаваных уласцівасцяў з адпаведнымі значэннямі.
 
-Using an object literal - `{}` notation - it is possible to create a 
-plain object. This new object [inherits](#object.prototype) from `Object.prototype` and 
-does not have [own properties](#object.hasownproperty) defined.
+Выкарыстоўваючы натацыю літэрала аб'екта - `{}` - магчыма стварыць
+просты аб'ект. Гэты новы аб'ект [пашырае](#object.prototype) `Object.prototype` і
+і не мае [сваіх уласцівасцяў](#object.hasownproperty) якія былі б вызначыныя.
 
-    var foo = {}; // a new empty object
+    var foo = {}; // новы пусты аб'ект
 
-    // a new object with a 'test' property with value 12
-    var bar = {test: 12}; 
+    // новы аб'ект з уласціваццю 'test', якая мае значэнне 12
+    var bar = {test: 12};
 
-### Accessing Properties
+### Доступ да ўласцівасцяў
 
-The properties of an object can be accessed in two ways, via either the dot
-notation or the square bracket notation.
-    
+Доступ да ўласцівасцяў аб'екта можа адбываецца двумя спосабамі, праз кропкавую
+натацыю або натацыю з квадратнымі дужкамі.
+
     var foo = {name: 'kitten'}
     foo.name; // kitten
     foo['name']; // kitten
-    
+
     var get = 'name';
     foo[get]; // kitten
-    
+
     foo.1234; // SyntaxError
-    foo['1234']; // works
+    foo['1234']; // працуе
 
-The notations work almost identically, with the only difference being that the
-square bracket notation allows for dynamic setting of properties and
-the use of property names that would otherwise lead to a syntax error.
+Натацыі працуюць амаль што ідэнтычна, з адзінай розніцай у тым, што
+натацыя з квадратнымі дужкамі дазваляе дынамічную устаноўку ўласцівасцяў і
+выкарыстанне імёнаў уласцівасцяў, якія інакш прывялі б да сінтаксічных памылак.
 
-### Deleting Properties
+### Выдаленне Ўласцівасцяў
 
-The only way to remove a property from an object is to use the `delete`
-operator; setting the property to `undefined` or `null` only removes the
-*value* associated with the property, but not the *key*.
+Адзіны спосаб выдаліць уласціваць з аб'екта - гэта выкарыстаць аператар `delete`;
+пазначэнне уласціваці як `undefined` або `null` толькі прыбірае
+*value* звязанае з уласцівацю, але не *ключ*.
 
     var obj = {
         bar: 1,
@@ -77,23 +77,22 @@ operator; setting the property to `undefined` or `null` only removes the
         }
     }
 
-The above outputs both `bar undefined` and `foo null` - only `baz` was
-removed and is therefore missing from the output.
+Вышэй прыведзены код вывядзе `bar undefined` і `foo null` - толькі `baz` быў
+выдалены і таму адсутнічае ў вывадзе.
 
-### Notation of Keys
+### Натацыя ключэй
 
     var test = {
-        'case': 'I am a keyword, so I must be notated as a string',
-        delete: 'I am a keyword, so me too' // raises SyntaxError
+        'case': 'Я ключавое слова, таму я павынна быць пазначана як радок',
+        delete: 'Я таксама ключавое слова, таму і я' // уздымае SyntaxError
     };
 
-Object properties can be both notated as plain characters and as strings. Due to
-another mis-design in JavaScript's parser, the above will throw 
-a `SyntaxError` prior to ECMAScript 5.
+Уласцівасці аб'ектаў могуць быць пазначаныя як сімваламі, так і ў выглядзе радкоў.
+Праз яшчэ адну хібу сінтаксічнага аналізатара JavaScript, вышэй прыведзены код
+кіне `SyntaxError` у весіях ранейшых за ECMAScript 5.
 
-This error arises from the fact that `delete` is a *keyword*; therefore, it must be 
-notated as a *string literal* to ensure that it will be correctly interpreted by
-older JavaScript engines.
+Гэта памылка ўздымаецца праз тое, што `delete` - гэта *ключавое слова*; такім чынам,
+яно мае быць пазначаны як *літэрал радка* каб забяспечыць, што яно будзе какрэктна
+інтэрпрэтавана старымі рухавікамі JavaScript.
 
 [1]: http://en.wikipedia.org/wiki/Hashmap
-

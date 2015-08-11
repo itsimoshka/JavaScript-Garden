@@ -1,15 +1,15 @@
 {
     "title": "JavaScript Garden",
-    "langTitle": "JavaScript Garden in English",
-    "description": "A Guide to JavaScript's Quirks and Flaws.",
+    "langTitle": "JavaScript Garden па Беларуску",
+    "description": "Мануал па недахопаў і дзівосах JavaScript",
     "sections": [
         {
-            "title": "Intro",
+            "title": "Уводзіны",
             "dir": "intro",
             "articles": ["index"]
         },
         {
-            "title": "Objects",
+            "title": "Аб'екты",
             "dir": "object",
             "articles": [
                 "general",
@@ -19,7 +19,7 @@
             ]
         },
         {
-            "title": "Functions",
+            "title": "Функцыі",
             "dir": "function",
             "articles": [
                 "general",
@@ -31,7 +31,7 @@
             ]
         },
         {
-            "title": "Arrays",
+            "title": "Масівы",
             "dir": "array",
             "articles": [
                 "general",
@@ -39,7 +39,7 @@
             ]
         },
         {
-            "title": "Types",
+            "title": "Тыпы",
             "dir": "types",
             "articles": [
                 "equality",
@@ -49,7 +49,7 @@
             ]
         },
         {
-            "title": "Core",
+            "title": "Ядро",
             "dir": "core",
             "articles": [
                 "eval",
@@ -59,7 +59,7 @@
             ]
         },
         {
-            "title": "Other",
+            "title": "Рэшта",
             "dir": "other",
             "articles": [
                 "timeouts"

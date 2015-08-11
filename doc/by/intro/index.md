@@ -1,39 +1,39 @@
-## Intro
+## Уступ
 
-**JavaScript Garden** is a growing collection of documentation about the most 
-quirky parts of the JavaScript programming language. It gives advice to 
-avoid common mistakes and subtle bugs, as well as performance issues and bad 
-practices, that non-expert JavaScript programmers may encounter on their 
-endeavours into the depths of the language.
+**JavaScript Garden** гэта растучы набор дакументацыі аб найбольш
+цікавых частках мовы праграмавання JavaScript. Ён дае парады аб тым як пазбегнуць
+частыя і непрадказальныя памылкі, а таксама праблемы з хуткасцю выконвання і
+дрэннымі практыкамі, якія праграмісты, не з'яўляючыяся экспертамі у JavaScript
+маглі сустрэць падчас сваіх пошукаў у глыбіні мовы.
 
-JavaScript Garden does **not** aim to teach you JavaScript. Former knowledge
-of the language is strongly recommended in order to understand the topics covered
-in this guide. In order to learn the basics of the language, please head over to 
-the excellent [guide][1] on the Mozilla Developer Network.
+JavaScript Garden **не** ставіць мэты навучыць вас мове JavaScript. Былыя веды
+мовы рэкамендаваныя, каб вы змаглі зразумець рэчы разглядаемыя ў гэтым мануале.
+Каб зразумець базавыя рэчы мовы, калі ласка прачытайце цудоўны [мануал][1]
+у Сетцы Распрацоўшчыкаў Mozilla.
 
-## The Authors
+## Аўтары
 
-This guide is the work of two lovely [Stack Overflow][2] users, [Ivo Wetzel][3]
-(Writing) and [Zhang Yi Jiang][4] (Design).
+Гэты мануал - праца двух вытатных карыстальнікаў [Stack Overflow][2] , [Ivo Wetzel][3]
+(Тэкст) і [Zhang Yi Jiang][4] (Дызайн).
 
-It's currently maintained by [Tim Ruffles](http://truffles.me.uk).
+На дадзены момант падтрымліваецца [Tim Ruffles](http://truffles.me.uk).
 
-## Contributors
+## Удзельнікі
 
-- Too many to list here, [see all contributors](https://github.com/BonsaiDen/JavaScript-Garden/graphs/contributors).
+- Зашмат каб пералічыць тут, [паглядзіце спіс](https://github.com/BonsaiDen/JavaScript-Garden/graphs/contributors).
 
 
-## Hosting
+## Хостынг
 
-JavaScript Garden is hosted on GitHub, but [Cramer Development][7] supports us
-with a mirror at [JavaScriptGarden.info][8].
+JavaScript Garden хосціцца на GitHub, але [Cramer Development][7] падтрымлівае нас
+люстэркам на [JavaScriptGarden.info][8].
 
-## License
+## Ліцэнзія
 
-JavaScript Garden is published under the [MIT license][9] and hosted on
-[GitHub][10]. If you find errors or typos please [file an issue][11] or a pull 
-request on the repository. You can also find us in the [JavaScript room][12] on
-Stack Overflow chat.
+JavaScript Garden апублікаваны пад [MIT ліцэнзіяй][9] і хосціцца на
+[GitHub][10]. Калі вы знойдзеце апячатку або памылку [пазначце памылку][11] або
+pull request у сховішча. Вы таксама можаце знайсці нас у [JavaScript room][12] на
+чаце Stack Overflow.
 
 [1]: https://developer.mozilla.org/en/JavaScript/Guide
 [2]: http://stackoverflow.com/
