@@ -1,66 +1,63 @@
-## The `for in` Loop
+## Цыкл `for in`
 
-Just like the `in` operator, the `for in` loop traverses the prototype
-chain when iterating over the properties of an object.
+Як і аператар `in`, цыкл `for in` праходзіць па ўсім ланцужку прататыпаў
+пры ітэрацыі па ўласцівасцях аб'екта.
 
-> **Note:** The `for in` loop will **not** iterate over any properties that
-> have their `enumerable` attribute set to `false`; for example, the `length`
-> property of an array.
+> **Заўвага:** Цыкл `for in` **не** ітэруе па уласцівасцях у якіх атрыбут
+> `enumerable` мае значэнне `false`; напрыклад, уласцівасць `length`
+> масіва (Array).
 
-    // Poisoning Object.prototype
+    // Атруцім Object.prototype
     Object.prototype.bar = 1;
 
     var foo = {moo: 2};
     for(var i in foo) {
-        console.log(i); // prints both bar and moo
+        console.log(i); // друкуе і bar і moo
     }
 
-Since it is not possible to change the behavior of the `for in` loop itself, it
-is necessary to filter out the unwanted properties inside the loop body. In
-ECMAScript 3 and older, this is done using the [`hasOwnProperty`](#object.hasownproperty)
-method of `Object.prototype`.
+Так як немагчыма памяняць паводзіны самаго цыкла `for in`, неабходна фільтраваць
+непажаданыя ўласцівасці аб'екта ўнутры цыкла. У версіях ECMAScript 3 і пазней,
+гэта можна зрабіць праз метад [`hasOwnProperty`](#object.hasownproperty).
 
-Since ECMAScript 5, `Object.defineProperty` can be used with
-`enumerable` set to `false` to add properties to objects (including `Object`)
-without these properties being enumerated. In this case it is reasonable
-to assume in application code that any enumerable properties have been added
-for a reason and to omit `hasOwnProperty`, since it makes code more verbose and less
-readable. In library code `hasOwnProperty` should still be used since
-assumptions cannot be made about which enumerable properties might reside
-on the prototype chain.
+Пачынаючы з ECMAScript 5, `Object.defineProperty` можа быць выкарыстана з
+`enumerable` роўным `false` каб дадаць уласцівасці аб'екту такім чынам, што яны
+не будуць пералічаны. У такім выпадку было б справядлівым меркаваць, што любая
+enumerable уласціваць была дададзена адмыслова і прапусціць `hasOwnProperty`, бо
+гэта робіць код больш шматслоўным і менш чытаемым. У бібліятэчным кодзе
+`hasOwnProperty` мае быць усё роўна выкарыстаны, бо не варта рабіць здагадкі аб
+тым якія enumerable ўласцівасці могуць пражываць у ланцужку прататыпаў.
 
-> **Note:** Since `for in` always traverses the complete prototype chain, it
-> will get slower with each additional layer of inheritance added to an object.
+> **Заўвага:** так як `for in` заўсёды праходзіць праз увесць ланцужок прататыпаў,
+> ён будзе працаваць усё марудней з кожным новым слоем спадкаемства.
 
-### Using `hasOwnProperty` for Filtering
+### Выкарыстоўванне `hasOwnProperty` для фільтрацыі
 
-    // still the foo from above
+    // возьмем foo з прыкладу
     for(var i in foo) {
         if (foo.hasOwnProperty(i)) {
             console.log(i);
         }
     }
 
-This version is the only correct one to use with older versions of ECMAScript.
-Due to the use of `hasOwnProperty`, it will **only** print out `moo`.
-When `hasOwnProperty` is left out, the code is prone to errors in cases where
-the native prototypes - e.g. `Object.prototype` -
-have been extended.
+Гэта адзіная правільная версія выкарыстоўвання цыкла. Дзякуючы выкарыстоўванню
+`hasOwnProperty`, быдзе вывядзена **толькі** `moo`.
+Калі прыбраць `hasOwnProperty`, код будзе схільны да памылак у выпадку калі
+натыўныя прататыпы - напрыклад `Object.prototype` - былі змененыя.
 
-In newer versions of ECMAScript, non-enumerable properties can be defined with
-`Object.defineProperty`, reducing the risk of iterating over properties without
-using `hasOwnProperty`. Nonetheless, care must be taken when using older
-libraries like [Prototype][1], which does not yet take advantage of new ECMAScript features.
-When this framework is included, `for in` loops that do not use
-`hasOwnProperty` are guaranteed to break.
+У новых версіях ECMAScript, уласцівасці з пазначаныя як не enumerable могуць быць
+вызначыныя праз `Object.defineProperty`, змяншаючы рызыку ітэрацыі праз іх без
+выкарыстання `hasOwnProperty`. Тым не менш, трэба быць уважлівым пры выкарыстанні
+старых бібліятэк, такіх як [Prototype][1], якая не выкарыстроўвае новымя магчымасці
+ECMAScript.
+Пры выкарыстоўванні гэтай бібліятэкі, цыклы `for in` якія не выкарыстоўваюць
+`hasOwnProperty` гарантавана не будуць працаваць.
 
-### In Conclusion
+### У заключэнне
 
-It is recommended to **always** use `hasOwnProperty` in ECMAScript 3 or lower, as well as
-in library code. Assumptions should never be made in these environments about whether
-the native prototypes have been extended or not. Since ECMAScript 5, `Object.defineProperty`
-makes it possible to define non-enumerable properties and to omit `hasOwnProperty` in
-application code.
+Рэкамендавана **заўсёды** выкарыстоўваць `hasOwnProperty` як у ECMAScript 3 або
+ніжэй, так і ў бібліатэчным кодзе. У гэтых асяродках ніколі не варта рабіць  
+здагадкі аб тым, быў зменены натыўны прататып ці не. Пачынаючы з ECMAScript 5,
+`Object.defineProperty` дазваляе пазначаць уласцівасці як не enumerable і прапускаць
+выкарыстоўванне `hasOwnProperty` у кодзе праграмы.
 
 [1]: http://www.prototypejs.org/
-

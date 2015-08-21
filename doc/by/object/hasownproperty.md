@@ -1,17 +1,16 @@
-## `hasOwnProperty`
+## Метад `hasOwnProperty`
 
-To check whether an object has a property defined on *itself* and not somewhere
-on its [prototype chain](#object.prototype), it is necessary to use the
-`hasOwnProperty` method which all objects inherit from `Object.prototype`.
+Каб праверыць ці ёсць у аб'екта ўласцівасць вызначна на *ім самім* а не небудзь
+у яе [ланцужку прататыпаў](#object.prototype), неабходна выкарыстаць метад
+`hasOwnProperty` які ўсе аб'екты ўспадкуюць ад `Object.prototype`.
 
-> **Note:** It is **not** enough to check whether a property is `undefined`. The
-> property might very well exist, but its value just happens to be set to
-> `undefined`.
+> **Заўвага:** **Недастаткова** праверыць ці значэнне уласцівасці `undefined`.
+> уласцівасць можа існаваць, але значэнне было пазначана як `undefined`.
 
-`hasOwnProperty` is the only thing in JavaScript which deals with properties and
-does **not** traverse the prototype chain.
+`hasOwnProperty` адзіная функцыя ў JavaScript, якая дазваляе атрымаць уласцівасці
+аб'екта **без** зварота да ланцужка прататыпаў.
 
-    // Poisoning Object.prototype
+    // Сапсуем Object.prototype
     Object.prototype.bar = 1;
     var foo = {goo: undefined};
 
@@ -21,16 +20,15 @@ does **not** traverse the prototype chain.
     foo.hasOwnProperty('bar'); // false
     foo.hasOwnProperty('goo'); // true
 
-Only `hasOwnProperty` will give the correct and expected result. See the section
-on [`for in` loops](#object.forinloop) for more details on when to use
-`hasOwnProperty` when iterating over object
-properties.
+Толькі `hasOwnProperty` дасць правільны чаканы вынік. Паглядзіце секцыю аб
+[цыкле `for in`](#object.forinloop) для лепшых дэталяў аб тым як выкарыстоўваць
+`hasOwnProperty` пад час ітэрацыі па ўласцівасцях аб'екта.
 
-### `hasOwnProperty` as a Property
+### `hasOwnProperty` як Уласцівасць
 
-JavaScript does not protect the property name `hasOwnProperty`; thus, if the
-possibility exists that an object might have a property with this name, it is
-necessary to use an *external* `hasOwnProperty` to get correct results.
+JavaScript не абараняе ўласцівасць `hasOwnProperty`; такім чынам, ёсць верагоднасць
+што ў аб'екта можа быць уласцівасць з такім імем, неабходна выкарыстаць
+*знешні* `hasOwnProperty` для карэктнага выніку.
 
     var foo = {
         hasOwnProperty: function() {
@@ -39,20 +37,19 @@ necessary to use an *external* `hasOwnProperty` to get correct results.
         bar: 'Here be dragons'
     };
 
-    foo.hasOwnProperty('bar'); // always returns false
+    foo.hasOwnProperty('bar'); // заўсёды верне false
 
-    // Use another Object's hasOwnProperty and call it with 'this' set to foo
+    // выкарыстайце hasOwnProperty іншага аб'екта
+    // і перадайце foo у якасці this
     ({}).hasOwnProperty.call(foo, 'bar'); // true
 
-    // It's also possible to use hasOwnProperty from the Object
-    // prototype for this purpose
+    // Такасама магчыма выкарыстаць hasOwnProperty з Object.prototype
     Object.prototype.hasOwnProperty.call(foo, 'bar'); // true
 
 
-### In Conclusion
+### Заключэнне
 
-Using `hasOwnProperty` is the **only** reliable method to check for the
-existence of a property on an object. It is recommended that `hasOwnProperty`
-be used in many cases when iterating over object properties as described
-in the section on [`for in` loops](#object.forinloop).
-
+Выкарыстоўванне `hasOwnProperty` ёсць **адзіным** надзейным спосабам каб
+праверыць існаванне ўласцівасці ў аб'екце. Рэкамендуецца выкарыстоўваць
+`hasOwnProperty` пры ітэрацыі па ўласцівасцях аб'екта як апісана ў секцыі
+[цыклы `for in` ](#object.forinloop).
