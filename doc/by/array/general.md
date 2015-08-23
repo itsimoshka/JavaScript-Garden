@@ -1,44 +1,42 @@
-## Array Iteration and Properties
+## Ітэрацыі па масівам і ўласцівасці
 
-Although arrays in JavaScript are objects, there are no good reasons to use
-the [`for in`](#object.forinloop) loop. In fact, there 
-are a number of good reasons **against** the use of `for in` on arrays.
+Хоць масівы ў JavaScript - аб'екты, няма добрых падставаў дзеля таго каб
+выкарыстоўваць [цыкл `for in`](#object.forinloop) для ітэрацыі па масівам.
+Фактычна, ёсць шэраг добрых пасдтаў **супраць** гэтага.
 
-> **Note:** JavaScript arrays are **not** *associative arrays*. JavaScript only 
-> has [objects](#object.general) for mapping keys to values. And while associative 
-> arrays **preserve** order, objects **do not**.
+> **Заўвага:** масівы JavaScript **не** *асацыятыўныя масівы*. JavaScript мае
+> [аб'екты](#object.general) для структуры ключ-значэнне. Але калі асацыятыўныя
+> масівы **захоўваюць** парадак, аб'екты - **не**.
 
-Because the `for in` loop enumerates all the properties that are on the prototype 
-chain and because the only way to exclude those properties is to use 
-[`hasOwnProperty`](#object.hasownproperty), it is already up to **twenty times** 
-slower than a normal `for` loop.
+Так як цыкл `for in` пералічвае ўсе ўласцівасці якія ёсць у ланцужку прататыпаў,
+і таму што адзіны спосаб выключыць гэтыя значэнні - [`hasOwnProperty`](#object.hasownproperty),
+ітэрацыя атрымліваецца ў **20 разоў** марудней за звычайны цыкл `for`.
 
-### Iteration
+### Ітэрацыя
 
-In order to achieve the best performance when iterating over arrays, it is best
-to use the classic `for` loop.
+Для таго каб атрымаць найлепшую прадукцыйнасць у ітэрацыі па масіву, лепш
+выкарыстаць класічны цыкл `for`.
 
     var list = [1, 2, 3, 4, 5, ...... 100000000];
     for(var i = 0, l = list.length; i < l; i++) {
         console.log(list[i]);
     }
 
-There is one extra catch in the above example, which is the caching of the 
-length of the array via `l = list.length`.
+У вышэйпрыведзеным прыкладзе ёсць яшчэ адзін прыём, з дапамогай якога можна кэшыць
+памер масіва: `l = list.length`.
 
-Although the `length` property is defined on the array itself, there is still an
-overhead for doing the lookup on each iteration of the loop. And while recent 
-JavaScript engines **may** apply optimization in this case, there is no way of
-telling whether the code will run on one of these newer engines or not. 
+Негледзячы на тое, што ўласцівасць `length` вызначана ў самім масіве, пошук
+гэтай уласцівасці накладывае выдаткі на пошук пры кожнай ітэрацыі цыкла. І хоць
+новыя рухавікі JavaScript **могуць** прымяніць аптымізацыю у гэтым выпадку, няма
+магчымасці дакладна ведаць - будзе код выкананы на гэтых новых рухавіках, або не.
 
-In fact, leaving out the caching may result in the loop being only **half as
-fast** as with the cached length.
+Фактычна, адсутнасць кэшавання можа зрабіць выкананне цыкла **у два разы больш
+марудным** чым з кэшаваным 'length'.
 
-### The `length` Property
+### Уласцівасць `length`
 
-While the *getter* of the `length` property simply returns the number of
-elements that are contained in the array, the *setter* can be used to 
-**truncate** the array.
+Хоць *гэттэр* уласцівасці `length` проста вяртае колькасць элементаў, што
+знаходзяцца у масіве, *сэттэр* можа быць выкарыстаны для **абразання** масіва.
 
     var arr = [1, 2, 3, 4, 5, 6];
     arr.length = 3;
@@ -48,11 +46,11 @@ elements that are contained in the array, the *setter* can be used to
     arr.push(4);
     arr; // [1, 2, 3, undefined, undefined, undefined, 4]
 
-Assigning a smaller length truncates the array. Increasing it creates a sparse array.
+Прысвойванне ўласцівасці 'length' меншага значэння абразае масіў. Прысваенне большага
+значэнне створыць разражаны масіў.
 
-### In Conclusion
+### У заключэнне
 
-For the best performance, it is recommended to always use the plain `for` loop
-and cache the `length` property. The use of `for in` on an array is a sign of
-badly written code that is prone to bugs and bad performance. 
-
+Для лепшай прадукцыйнасці, рэкамендуецца заўсёды выкарыстоўваць звычайны цыкл `for`,
+і кэшыць уласціваць `length`. Выкарыстоўванне `for in` для ітэрацыі па масіву -
+прыкмета дрэнна напісанага кода схільнага да памылак і дрэннай прадукцыйнасці.
