@@ -1,0 +1,7 @@
+script: bash ./deploy.sh
+env:
+  global:
+  - GH_REF: github.com/it-na-move/JavaScript-Garden.git
+install:
+- git config --global user.email "lahmataja.pa4vara@gmail.com"
+- git config --global user.name "vaukalak"
