@@ -1,21 +1,19 @@
-## The `typeof` Operator
+## Аператар `typeof`
 
-The `typeof` operator (together with 
-[`instanceof`](#types.instanceof)) is probably the biggest 
-design flaw of JavaScript, as it is almost **completely broken**.
+Аператар `typeof` (разам з [`instanceof`](#types.instanceof)) магчыма найбольшая
+хіба мовы JavaScript, таму што ён амаль што **цалкам зламаны**.
 
-Although `instanceof` still has limited uses, `typeof` really has only one
-practical use case, which does **not** happen to be checking the type of an 
-object. 
+Хаця `instanceof` усё яшчэ мае абмежаванае ўжыванне, `typeof` можа быць выкарыстаны
+толькі з адной мэтай, і гэта дарэчы **не** праверка тыпа.
 
-> **Note:** While `typeof` can also be called with a function like syntax, i.e.
-> `typeof(obj)`, this is not a function call. The parentheses behave as normal
-> and the return value will be used as the operand of the `typeof` operator.
-> There is **no** `typeof` function.
+> **Заўвага:** Хаця для выкліка `typeof` можна выкарыстаць сінтаксіс функцыі, то бок
+> `typeof(obj)`, гэта не выклік функцыі. Дужкі будуць апрацоўвацца нармальна
+> і вернутае значэнне будзе выкарыстана як аперанд аператара `typeof`.
+> **Не існуе** функцыі `typeof`.
 
-### The JavaScript Type Table
+### Табліца тыпаў JavaScript
 
-    Value               Class      Type
+    Значэнне            Клас       Тып
     -------------------------------------
     "foo"               String     string
     new String("foo")   String     object
@@ -33,52 +31,50 @@ object.
     {}                  Object     object
     new Object()        Object     object
 
-In the above table, *Type* refers to the value that the `typeof` operator returns.
-As can be clearly seen, this value is anything but consistent.
+У вышэй прыведзенай табыліцы, *Тып* паказвае значэнне вернутае аператарам `typeof`.
+Як можна пабачыць, гэта значэнне абсалютна не кансістэнтнае.
 
-The *Class* refers to the value of the internal `[[Class]]` property of an object.
+*Клас* паказвае значэнне ўнутраннай уласцівасці `[[Class]]` аб'екта.
 
-> **From the Specification:** The value of `[[Class]]` can be one of the
-> following strings. `Arguments`, `Array`, `Boolean`, `Date`, `Error`, 
+> **З спецыфікацыі:** значэнне `[[Class]]` можа быць быць адным з наступных
+> радкоў. `Arguments`, `Array`, `Boolean`, `Date`, `Error`,
 > `Function`, `JSON`, `Math`, `Number`, `Object`, `RegExp`, `String`.
 
-### The Class of an Object
+### Клас аб'екта
 
-The only way to determine an object's `[[Class]]` value is using `Object.prototype.toString`. It
-returns a string in the following format: `'[object ' + valueOfClass + ']'`, e.g `[object String]` or
-`[object Array]`:
+Адзіны спосаб атрымаць значэнне `[[Class]]` аб'екта - выклікаць метад `Object.prototype.toString`.
+Ён верне радок у наступным фармаце: `'[object ' + valueOfClass + ']'`, напрыклад
+`[object String]` або `[object Array]`:
 
     function is(type, obj) {
         var clas = Object.prototype.toString.call(obj).slice(8, -1);
         return obj !== undefined && obj !== null && clas === type;
     }
-    
+
     is('String', 'test'); // true
     is('String', new String('test')); // true
 
-In the above example, `Object.prototype.toString` gets called with the value of
-[this](#function.this) being set to the object whose `[[Class]]` value should be 
-retrieved.
+У вышэйпрыведзеным прыкладзе, `Object.prototype.toString` выклікаецца са значэннем
+[this](#function.this) пазначаным як аб'ект чыё значэнне `[[Class]]` мае быць
+атрыманым.
 
-> **ES5 Note:** For convenience the return value of `Object.prototype.toString` 
-> for both `null` and `undefined` was **changed** from `Object` to `Null` and 
-> `Undefined` in ECMAScript 5.
+> **Заўвага для ES5:** у ECMAScript 5, для зручнасці, значэнне `Object.prototype.toString`
+> для `null` і `undefined` было **зменена** з `Object` на `Null` і
+> `Undefined` адпаведна.
 
-### Testing for Undefined Variables
+### Праверка вызначанасці пераменных
 
     typeof foo !== 'undefined'
 
-The above will check whether `foo` was actually declared or not; just 
-referencing it would result in a `ReferenceError`. This is the only thing
-`typeof` is actually useful for.
+Вышэйпрыведзены код праверыць ці было вызначана `foo`; просты зварот да пераменнай
+прывядзе да `ReferenceError`. Гэта адзінае для чаго карысны `typeof`.
 
-### In Conclusion
+### У заключэнне
 
-In order to check the type of an object, it is highly recommended to use 
-`Object.prototype.toString` because this is the only reliable way of doing so. 
-As shown in the above type table, some return values of `typeof` are not defined 
-in the specification; thus, they can differ between implementations.
+Каб праверыць тып аб'екта, настойліва рэкамендуецца выкарыстоўваць
+`Object.prototype.toString` - гэта адзіны надзейны спосаб.
+Як паказана ў вышэйпрыведзенай табліцы, некаторыя значэнні вернутыя аператарам
+`typeof` не вызначаныя ў спецыфікацыі; такім чынам, яны могуць быць рознымі ў
+розных рэалізацыях.
 
-Unless checking whether a variable is defined, `typeof` should be avoided.
-
-
+Акрамя як для праверкі вызначанасці пераменнай, `typeof` мае быць пазбегнуты.
