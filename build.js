@@ -99,7 +99,7 @@ function writeTemplate(options,language) {
 }
 
 exports.build = function (opts) {
-  opts = _.defaults(opts || {},{ languagesDir: "doc", baseLanguage: "en", template: 'garden.jade', pathPrefix: 'JavaScript-Garden/', outDir: "site" });
+  opts = _.defaults(opts || {},{ languagesDir: "doc", baseLanguage: "by", template: 'garden.jade', pathPrefix: 'JavaScript-Garden/', outDir: "site" });
   return main(opts);
 }
 
