@@ -1,14 +1,14 @@
-## Equality and Comparisons
+## Роўнасць і параўнанне
 
-JavaScript has two different ways of comparing the values of objects for equality. 
+У JavaScript роўнасць значэнняў аб'ектаў можна вызначыць двумя спосабамі.
 
-### The Equality Operator
+### Аператар роўнасці
 
-The equality operator consists of two equal signs: `==`
+Аператар роўнасці складаецца з двух сімвалаў 'роўна': `==`
 
-JavaScript features *weak typing*. This means that the equality operator 
-**coerces** types in order to compare them.
-    
+JavaScript мае *слабую тыпізацыю*. Гэта значыць што аператар роўнасці
+**прыводзіць** тыпы аб'ектаў, каб параўнаць іх.
+
     ""           ==   "0"           // false
     0            ==   ""            // true
     0            ==   "0"           // true
@@ -19,20 +19,20 @@ JavaScript features *weak typing*. This means that the equality operator
     null         ==   undefined     // true
     " \t\r\n"    ==   0             // true
 
-The above table shows the results of the type coercion, and it is the main reason 
-why the use of `==` is widely regarded as bad practice. It introduces
-hard-to-track-down bugs due to its complicated conversion rules.
+Вышэй прыведзеная табліца паказвае вынікі прывядзення тыпаў, і гэта галоўная прычына
+па якой выкаростоўванне `==` лічыцца дрэннай практыкай. Яно прыводзіць да памылак
+якія цяжка адсачыць праз складаны механізм прывядзення тыпаў.
 
-Additionally, there is also a performance impact when type coercion is in play;
-for example, a string has to be converted to a number before it can be compared
-to another number.
+Акрамя гэтага, прывядзенне тыпаў таксама ўплывае на вытворчасць;
+напрыклад, радок мае быць ператвораны ў нумар, перад тым як быць параўнаным з
+іншым нумарам.
 
-### The Strict Equality Operator
+### Аператар строгай роўнасці
 
-The strict equality operator consists of **three** equal signs: `===`.
+Аператар строгай роўнасці складаецца з **трох** сімвалаў 'роўна': `===`.
 
-It works like the normal equality operator, except that strict equality 
-operator does **not** perform type coercion between its operands.
+Ён дзейнічае як звычайны аператар роўнасці, за выключэннем таго, што строгая
+роўнасць **не** прыводзіць аперанды да агульнага тыпу.
 
     ""           ===   "0"           // false
     0            ===   ""            // false
@@ -44,14 +44,14 @@ operator does **not** perform type coercion between its operands.
     null         ===   undefined     // false
     " \t\r\n"    ===   0             // false
 
-The above results are a lot clearer and allow for early breakage of code. This
-hardens code to a certain degree and also gives performance improvements in case
-the operands are of different types.
+Вышэй прыведзеныя вынікі значна больш зразумелыя і даюць магчымасць хутчэй выявіць
+памылкі ў кодзе. Гэта паляпшае код, а таксама дае прырост вытворчасці, у выпадку
+калі аперанды розных тыпаў.
 
-### Comparing Objects
+### Параўнанне аб'ектаў
 
-While both `==` and `===` are called **equality** operators, they behave 
-differently when at least one of their operands is an `Object`.
+Хоць абодва аператар `==` і `===` называюцца аператарамі **роўнасці**, яны паводзяць
+сабе па рознаму калі хоць адзін аперанд тыпа `Object`.
 
     {} === {};                   // false
     new String('foo') === 'foo'; // false
@@ -59,13 +59,12 @@ differently when at least one of their operands is an `Object`.
     var foo = {};
     foo === foo;                 // true
 
-Here, both operators compare for **identity** and **not** equality; that is, they
-will compare for the same **instance** of the object, much like `is` in Python 
-and pointer comparison in C.
+Тут абодва аператанда параўноўваюцца на **ідэнтычнасць**, а **не** на роўнасць;
+то бок будзе праверана, ці з'яўляюцца яны адным **экзэмплярам** аб'екта. Гэтак жа,
+як `is` у Python, або параўнанне ўказальнікаў у C.
 
-### In Conclusion
+### У заключэнне
 
-It is highly recommended to only use the **strict equality** operator. In cases
-where types need to be coerced, it should be done [explicitly](#types.casting) 
-and not left to the language's complicated coercion rules.
-
+Настойліва рэкамендуецца выкарыстоўваць толькі аператар **строгай роўнасці**.
+У выпадку, калі тыпы маюць быць прыведзеныя, гэта варта рабіць [яўна](#types.casting),
+а не пакідаць іх на сумленні складаных правілаў прывядзення мовы праграмавання.
