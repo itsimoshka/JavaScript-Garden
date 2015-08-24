@@ -1,8 +1,8 @@
-## The `instanceof` Operator
+## Аператар `instanceof`
 
-The `instanceof` operator compares the constructors of its two operands. It is 
-only useful when comparing custom made objects. Used on built-in types, it is
-nearly as useless as the [typeof operator](#types.typeof).
+Аператар `instanceof` параўноўвае канструктары двух аперандаў. Гэта карысна толькі
+для параўнання аб'ектаў не ўбудаваных тыпаў. Выкарыстоўванне на ўбудаваных тыпах не
+мае сэнсу, як і [аператар typeof](#types.typeof).
 
 ### Comparing Custom Objects
 
@@ -13,12 +13,12 @@ nearly as useless as the [typeof operator](#types.typeof).
     new Bar() instanceof Bar; // true
     new Bar() instanceof Foo; // true
 
-    // This just sets Bar.prototype to the function object Foo,
-    // but not to an actual instance of Foo
+    // Калі толькі прысвоім Bar.prototype аб'ект функцыі Foo,
+    // але не самаго экзэмпляра Foo
     Bar.prototype = Foo;
     new Bar() instanceof Foo; // false
 
-### Using `instanceof` with Native Types
+### Выкарыстоўванне `instanceof` з убудаванымі тыпамі
 
     new String('foo') instanceof String; // true
     new String('foo') instanceof Object; // true
@@ -26,13 +26,12 @@ nearly as useless as the [typeof operator](#types.typeof).
     'foo' instanceof String; // false
     'foo' instanceof Object; // false
 
-One important thing to note here is that `instanceof` does not work on objects 
-that originate from different JavaScript contexts (e.g. different documents
-in a web browser), since their constructors will not be the exact same object.
+Варта адзначыць, што `instanceof` не працуе на аб'ектах, якія паходзяць з розных
+кантэкстаў JavaScript (напрыклад, розных дакументаў у web-браузеры), бо іх наструктары
+насамрэч не будуць канструктарамі тых самых аб'ектаў.
 
-### In Conclusion
+### У заключэнне
 
-The `instanceof` operator should **only** be used when dealing with custom made 
-objects that originate from the same JavaScript context. Just like the
-[`typeof`](#types.typeof) operator, every other use of it should be **avoided**.
-
+Аператар `instanceof` мае быць выкарыстаны **толькі** для працы з аб'ектамі не
+ўбудаваных тыпаў якія паходзяць з таго ж кантэкста JavaScript. Як і ў выпадку з
+[аператарам `typeof`](#types.typeof), трэба **пазбягаць** любога іншага яго выкарыстання.
