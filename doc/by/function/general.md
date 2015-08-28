@@ -1,48 +1,48 @@
-## Function Declarations and Expressions
+## Выразы і аб'яўленне функцый
 
-Functions in JavaScript are first class objects. That means they can be 
-passed around like any other value. One common use of this feature is to pass
-an *anonymous function* as a callback to another, possibly an asynchronous function.
+У JavaScript функцыі таксама з'яўляюцца аб'ектамі. Гэта значыць іх можна перадаваць
+і прысвойваць як і любыя іншыя аб'екты. Адзін, часта выкарыстоўваемы варыянт,
+гэтай магчымасці - перадача *ананімнага метада* як функцыі зваротнага выкліку
+іншай, магчыма асінхроннай функцыі.
 
-### The `function` Declaration
+### Аб'яўленне `function`
 
     function foo() {}
 
-The above function gets [hoisted](#function.scopes) before the execution of the
-program starts; thus, it is available *everywhere* in the scope it was
-*defined*, even if called before the actual definition in the source.
+У вышэй прыведзеным прыкладзе функцыя [уздымаецца](#function.scopes) перад тым
+як пачынаецца выконванне праграмы; Такім чынам, яна даступная *паўсюль* у скоўпе,
+у якім яна была *аб'яўлена*, нават калі выклік адбываецца да фактычнага аб'яўлення
+ў кодзе.
 
-    foo(); // Works because foo was created before this code runs
+    foo(); // Працуе, бо функцыя будзе створана да выконвання кода
     function foo() {}
 
-### The `function` Expression
+### `function` як выраз
 
     var foo = function() {};
 
-This example assigns the unnamed and *anonymous* function to the variable `foo`. 
+У гэтым прыкладзе пераменнай `foo` прысвойваецца безымянная і *ананімная* функцыя.
 
     foo; // 'undefined'
-    foo(); // this raises a TypeError
+    foo(); // уздыме TypeError
     var foo = function() {};
 
-Due to the fact that `var` is a declaration that hoists the variable name `foo` 
-before the actual execution of the code starts, `foo` is already declared when 
-the script gets executed.
+Праз тое, што `var` - гэта аб'яўленне якое уздымае імя пераменнай `foo` перад тым
+як код будзе выкананы, `foo` будзе ўжо аб'яўленым калі ён пачне выконвацца.
 
-But since assignments only happen at runtime, the value of `foo` will default
-to [undefined](#core.undefined) before the corresponding code is executed.
+Але так як прысвойванні адбываюцца толькі пад час выконвання, значэнне `foo`
+будзе змоўчанным ([undefined](#core.undefined)) да выконвання адпаведнага кода.
 
-### Named Function Expression
+### Выразы з іменаванымі функцыямі
 
-Another special case is the assignment of named functions.
+Яшчэ адзін выбітны выпадак - прысвойванне іменавай функцыі.
 
     var foo = function bar() {
-        bar(); // Works
+        bar(); // працую
     }
     bar(); // ReferenceError
 
-Here, `bar` is not available in the outer scope, since the function only gets
-assigned to `foo`; however, inside of `bar`, it is available. This is due to 
-how [name resolution](#function.scopes) in JavaScript works, the name of the 
-function is *always* made available in the local scope of the function itself.
-
+Тут, `bar` не даступны ў знешнім скоўпе, бо функцыя толькі прысвойваецца пераменнай
+`foo`; аднак, унутры `bar`, імя даступнае. Так адбываецца праз асаблівасці працы
+з [прастранствамі імён](#function.scopes) у JavaScript - імя функцыі *заўсёды*
+даступнае ў лакальным скоўпе функцыі.
