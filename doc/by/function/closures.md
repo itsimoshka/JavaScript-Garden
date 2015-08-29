@@ -1,11 +1,12 @@
-## Closures and References
+## Замыканні і спасылкі
 
-One of JavaScript's most powerful features is the availability of *closures*.
-With closures, scopes **always** keep access to the outer scope, in which they
-were defined. Since the only scoping that JavaScript has is 
-[function scope](#function.scopes), all functions, by default, act as closures.
+Адна з найбольш магутных магчымасцяў JavaScript - магчымасць ствараць *замыканні*.
+Зона бачнасці замыканняў **заўсёды** мае доступ да знешняй зоны бачнасці, у якой
+замыканне было аб'яўлена. Так як у JavaScript адзіны механізм працы з зонай бачнасці
+гэта [зоны бачнасці функцыі](#function.scopes), усе функцыі выступаюць у якасці
+замыканняў.
 
-### Emulating private variables
+### Эмуляцыя прыватных пераменных
 
     function Counter(start) {
         var count = start;
@@ -24,30 +25,29 @@ were defined. Since the only scoping that JavaScript has is
     foo.increment();
     foo.get(); // 5
 
-Here, `Counter` returns **two** closures: the function `increment` as well as 
-the function `get`. Both of these functions keep a **reference** to the scope of 
-`Counter` and, therefore, always keep access to the `count` variable that was 
-defined in that scope.
+Тут, `Counter` вяртае **два** замыканні: функцыю `increment` і функцыю `get`.
+Абедзьве функцыі маюць **спасылку** на зону бачнасці `Counter` і, таму, заўсёды
+маюць доступ да пераменнай `count`, што была аб'яўлена ў гэтай зоне бачнасці.
 
-### Why Private Variables Work
+### Якім чынам гэта працуе
 
-Since it is not possible to reference or assign scopes in JavaScript, there is 
-**no** way of accessing the variable `count` from the outside. The only way to 
-interact with it is via the two closures.
+Так як у JavaScript немагчыма спасылацца або прысвойваць зоны бачнасці, **немагчыма**
+атрымаць доступ да пераменнай `count` звонку. Адзіны спосаб узаемадзейнічаць з ім -
+выкарыстоўваць два замыканні.
 
     var foo = new Counter(4);
     foo.hack = function() {
         count = 1337;
     };
 
-The above code will **not** change the variable `count` in the scope of `Counter`, 
-since `foo.hack` was not defined in **that** scope. It will instead create - or 
-override - the *global* variable `count`.
+Вышэйпрыведзены код **не** памяняе значэнне пераменнай `count` у зоне бачнасці
+`Counter`, бо `foo.hack` не быў аб'яўлены у **гэтай** зоне бачнасці. Замест гэтага
+ён створыць, або перазапіша, *глабальную* пераменную `count`.
 
-### Closures Inside Loops
+### Замыканні ўнутры цыклаў
 
-One often made mistake is to use closures inside of loops, as if they were
-copying the value of the loop's index variable.
+Частая памылка - выкарыстанне замыканняў унутры цыклаў, як быццам бы яны капіруюць
+значэнне пераменнай індэксу цыкла.
 
     for(var i = 0; i < 10; i++) {
         setTimeout(function() {
@@ -55,20 +55,18 @@ copying the value of the loop's index variable.
         }, 1000);
     }
 
-The above will **not** output the numbers `0` through `9`, but will simply print
-the number `10` ten times.
+Вышэй прыведзены код **не** вывядзе нумары ад `0` да `9`, ён проста вывядзе
+намар `10` дзесяць разоў.
 
-The *anonymous* function keeps a **reference** to `i`. At the time 
-`console.log` gets called, the `for loop` has already finished, and the value of 
-`i` has been set to `10`.
+*Ананімная* функцыя захоўвае **спасылку** на `i`. У той час як функцыя `console.log`
+выклікаецца, `цыкл for` ужо адпрацаваў, а значэнне `i` ужо стала `10`.
 
-In order to get the desired behavior, it is necessary to create a **copy** of 
-the value of `i`.
+Каб атрымаць пажаданыя паводзіны, неабходна стварыць **копію** значэння `i`.
 
-### Avoiding the Reference Problem
+### Як абыйсці праблемы спасылкі
 
-In order to copy the value of the loop's index variable, it is best to use an 
-[anonymous wrapper](#function.scopes).
+Каб стварыць копію значэння пераменнай індэкса цыкла, лепшы спосаб - стварэнне
+[ананімнай абгорткі](#function.scopes).
 
     for(var i = 0; i < 10; i++) {
         (function(e) {
@@ -78,15 +76,14 @@ In order to copy the value of the loop's index variable, it is best to use an
         })(i);
     }
 
-The anonymous outer function gets called immediately with `i` as its first 
-argument and will receive a copy of the **value** of `i` as its parameter `e`.
+Знешняя ананімная функцыя выконваецца імгненна з `i` у якасці першага аргумента
+і атрымае копію **значэння** `i` у якасці параметра `e`.
 
-The anonymous function that gets passed to `setTimeout` now has a reference to 
-`e`, whose value does **not** get changed by the loop.
+Ананімная функцыя, што перадаецца метаду `setTimeout` цяпер мае спасылку на
+`e`, чыё значэнне **не** мяняецца на працягу цыкла.
 
-There is another possible way of achieving this, which is to return a function 
-from the anonymous wrapper that will then have the same behavior as the code 
-above.
+Яшчэ адзін спосаб атрымаць такі вынік - вяртаць функцыю з ананімнай абгорткі,
+што будзе паводзіць сябе такім жа чынам як і папярэдні прыклад.
 
     for(var i = 0; i < 10; i++) {
         setTimeout((function(e) {
@@ -96,8 +93,8 @@ above.
         })(i), 1000)
     }
 
-The other popular way to achieve this is to add an additional argument to
-the `setTimeout` function, which passes these arguments to the callback.
+Яшчэ адзін папулярны спосаб дасягнуць гэтага - дадаць яшчэ адзін аргумент выкліку
+функцыі `setTimeout`, якая перадасць агрумент функцыі зваротнага выкліку.
 
     for(var i = 0; i < 10; i++) {
         setTimeout(function(e) {
@@ -105,11 +102,11 @@ the `setTimeout` function, which passes these arguments to the callback.
         }, 1000, i);
     }
 
-Some legacy JS environments (Internet Explorer 9 & below) do not support this.
+Некаторыя старыя асяродкі JS (Internet Explorer 9 і ніжэй) не падтрымліваюць
+гэтую магчымасць.
 
-There's yet another way to accomplish this by using `.bind`, which can bind
-a `this` context and arguments to function. It behaves identically to the code
-above
+Таксама магчыма выканаць гэта выкарыстоўваючы `.bind`, якая можа звязаць
+`this` і аргументы функцыі. Ніжэй прыведзены прыклад працуе як і папярэднія.
 
     for(var i = 0; i < 10; i++) {
         setTimeout(console.log.bind(console, i), 1000);
