@@ -1,45 +1,46 @@
-## The `arguments` Object
+## Аб'ект `arguments`
 
-Every function scope in JavaScript can access the special variable `arguments`.
-This variable holds a list of all the arguments that were passed to the function.
+У зоне бачнасці любой функцыі JavaScript ёсць доступ да адмысловай пераменнай
+`arguments`. Гэтая пераменная утрымлівае спіс усіх аргументаў, што былі
+перададзеныя функцыі.
 
-> **Note:** In case `arguments` has already been defined inside the function's
-> scope either via a `var` statement or being the name of a formal parameter,
-> the `arguments` object will not be created.
+> **Заўвага:** У выпадку калі `arguments` ужо быў створаны унутры зоны бачнасці
+> функцыі праз выраз `var`, або з'яўляецца фармальным параметрам,
+> аб'ект `arguments` не будзе створаны.
 
-The `arguments` object is **not** an `Array`. While it has some of the 
-semantics of an array - namely the `length` property - it does not inherit from 
-`Array.prototype` and is in fact an `Object`.
+Аб'ект `arguments` **не з'яўляецца** спадкаемцам `Array`. Ён мае падабенствы з
+з масівам, напрыклад уласцівасць `length`. Але ён не успадкоўвае `Array.prototype`,
+а ўяўляе з сябе `Object`.
 
-Due to this, it is **not** possible to use standard array methods like `push`,
-`pop` or `slice` on `arguments`. While iteration with a plain `for` loop works 
-just fine, it is necessary to convert it to a real `Array` in order to use the 
-standard `Array` methods on it.
+Таму **не** магчыма выклікаць стандартныя метады як `push`, `pop` або `slice`
+у аб'екта `arguments`. Тым не менш ітэрацыя з звычайным цыклам `for` працуе карэктна.
+Неабходна канвертаваць яго ў сапраўдны аб'ект `Array` каб прымяніць стандартныя
+метады масіваў.
 
-### Converting to an Array
+### Канвертацыя ў масіў
 
-The code below will return a new `Array` containing all the elements of the 
-`arguments` object.
+Ніжэйпрыведезны код верне новы масіў, які будзе ўтрымліваць усе элементы аб'екта
+`arguments`.
 
     Array.prototype.slice.call(arguments);
 
-Because this conversion is **slow**, it is **not recommended** to use it in
-performance-critical sections of code.
+Такая канвертацыя **марудная**, яе **не рэкамендуецца** выкарыстоўваць у крытычных
+, у плане вытворчасці, частках кода.
 
-### Passing Arguments
+### Перадача `arguments`
 
-The following is the recommended way of passing arguments from one function to
-another.
+Ніжэй прадстаўлены рэкамендуемы спосаб перадачы аргументаў з адной функцыі ў іншую.
 
     function foo() {
         bar.apply(null, arguments);
     }
     function bar(a, b, c) {
-        // do stuff here
+        // тут робім што небудзь
     }
 
-Another trick is to use both `call` and `apply` together to turn methods - functions that use the
-value of `this` as well as their arguments - into normal functions which only use their arguments.
+Яшчэ адзін прыём гэта выкарыстанне `call` і `apply` разам, каб ператварыць метады
+што выкарыстоўваюць значэнне `this` як і свае аргументы - у звычайныя функцыі,
+што выкарыстоўваюць толькі аргументы.
 
     function Person(first, last) {
       this.first = first;
@@ -53,9 +54,10 @@ value of `this` as well as their arguments - into normal functions which only us
       return first + (joiner || " ") + last;
     };
 
-    // Create an unbound version of "fullname", usable on any object with 'first'
-    // and 'last' properties passed as the first argument. This wrapper will
-    // not need to change if fullname changes in number or order of arguments.
+    // Ствараем незвязаную версію "fullname", што можа быць выкарыстана з любым
+    // аб'ектам, маючым ўласцівасці 'first' і 'last', перададзеным у якасці
+    // першага параметра. Гэтую абгортку не трэба будзе мяняць калі колькасць або
+    // парадак аргументаў fullname зменяцца.
     Person.fullname = function() {
       // Result: Person.prototype.fullname.call(this, joiner, ..., argN);
       return Function.call.apply(Person.prototype.fullname, arguments);
@@ -70,13 +72,13 @@ value of `this` as well as their arguments - into normal functions which only us
     Person.fullname({ first: "Alan", last: "Turing" }, ", ", { order: "eastern" });
 
 
-### Formal Parameters and Arguments Indices
+### Фармальныя параметры і індэксы аргументаў
 
-The `arguments` object creates *getter* and *setter* functions for both its 
-properties, as well as the function's formal parameters.
+Аб'ект `arguments` стварае функцыю *гэттэр* і *сэттэр* як да кожнай са сваіх
+уласцівасцяў, так і да фармальных параметраў функцыі.
 
-As a result, changing the value of a formal parameter will also change the value
-of the corresponding property on the `arguments` object, and the other way around.
+У выніку змена значэння фармальнага параметра зменіць таксама адпаведную ўласцівасць
+аб'екта `arguments`, і наадварот.
 
     function foo(a, b, c) {
         arguments[0] = 2;
@@ -91,42 +93,39 @@ of the corresponding property on the `arguments` object, and the other way aroun
     }
     foo(1, 2, 3);
 
-### Performance Myths and Truths
+### Міфы і праўда аб вытворчасці
 
-The only time  the `arguments` object is not created is where it is declared as
-a name inside of a function or one of its formal parameters. It does not matter
-whether it is used or not.
+Адзінай магчымасцю, калі `arguments` не ствараецца, гэта калі ёсць фармальны
+аргумент функцыі, або пераменная ўнутры яе з такім іменем. Не важна выкарыстоўваецца
+ён ці не.
 
-Both *getters* and *setters* are **always** created; thus, using it has nearly 
-no performance impact at all, especially not in real world code where there is 
-more than a simple access to the `arguments` object's properties.
+Як *гэттэры* так і *сэттэры* ствараюцца **заўсёды**; Таму, іх выкарыстоўванне не
+мае амаль ніякага ўплыву на вытворчасць.
 
-> **ES5 Note:** These *getters* and *setters* are not created in strict mode.
+> **Заўвага для ES5:** *гэттэры* і *сэттэры* не ствараюцца ў строгім рэжыме.
 
-However, there is one case which will drastically reduce the performance in
-modern JavaScript engines. That case is the use of `arguments.callee`.
+Тым не менш, ёсць адна рэч, якая можа жахліва знізіць вытворчасць у сучасных
+рухавіках JavaScript - гэта выкарыстанне `arguments.callee`.
 
     function foo() {
-        arguments.callee; // do something with this function object
-        arguments.callee.caller; // and the calling function object
+        arguments.callee; // робім што не будзь з функцыяй foo
+        arguments.callee.caller; // і з функцыяй якая выклікала foo
     }
 
     function bigLoop() {
         for(var i = 0; i < 100000; i++) {
-            foo(); // Would normally be inlined...
+            foo(); // Звычайна ўстаўляецца...
         }
     }
 
-In the above code, `foo` can no longer be a subject to [inlining][1] since it 
-needs to know about both itself and its caller. This not only defeats possible 
-performance gains that would arise from inlining, but it also breaks encapsulation
-because the function may now be dependent on a specific calling context.
+У вышэйпрыведзеным кодзе, `foo` больш не можа быць [устаўлена][1] бо ёй трэба
+ведаць аб сабе і аб функцыі што яе выклікала. Гэта не толькі прыбірае павышэнне
+вытворчасці, што магло адбыцца дзякуючы ўстаўцы, але і парушае інкапсуляцыю, бо
+функцыя цяпер залежыць ад спецыфічнага выклікаючага кантэкста.
 
-Making use of `arguments.callee` or any of its properties is **highly discouraged**.
+Выкарыстоўванне `arguments.callee` або яго ўласцівасцяў **вельмі непажадана**.
 
-> **ES5 Note:** In strict mode, `arguments.callee` will throw a `TypeError` since 
-> its use has been deprecated.
+> **Заўвага для ES5:** У строгім рэжыме, `arguments.callee` кіне памылку `TypeError`,
+> бо яго выкарыстанне аб'яўлена састарэлым.
 
 [1]: http://en.wikipedia.org/wiki/Inlining
-
-
