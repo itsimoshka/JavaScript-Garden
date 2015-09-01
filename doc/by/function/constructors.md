@@ -1,15 +1,14 @@
-## Constructors 
+## Канструктары
 
-Constructors in JavaScript are yet again different from many other languages. Any
-function call that is preceded by the `new` keyword acts as a constructor.
+Канструктары ў JavaScript таксама адрозніваюцца ад большасці іншых моваў. Любы
+выклік функцыі, якому папярэднічае ключавое слова `new` з'яўляецца канструктарам.
 
-Inside the constructor - the called function - the value of `this` refers to a 
-newly created object. The [prototype](#object.prototype) of this **new** 
-object is set to the `prototype` of the function object that was invoked as the
-constructor.
+Унутры канструктара (выкліканай функцыі) - значэнне `this` спасылаецца на
+новаствораны аб'ект. [Прататыпам](#object.prototype) **новага**
+аб'екта прызначаецца `prototype` функцыі, што была выклікана ў якасці канструктара.
 
-If the function that was called has no explicit `return` statement, then it
-implicitly returns the value of `this` - the new object. 
+У выпадку, калі выкліканая функцыя не вяртае яўнага значэння праз `return`, будзе
+не яўна вернута значэнне `this`, то бок новы аб'ект.
 
     function Person(name) {
         this.name = name;
@@ -21,16 +20,15 @@ implicitly returns the value of `this` - the new object.
 
     var sean = new Person();
 
-The above calls `Person` as constructor and sets the `prototype` of the newly
-created object to `Person.prototype`.
+У гэтым прыкладзе `Person` выклікаецца ў якасці канструктара, адпаведна `prototype`
+створанага аб'екта будзе прывязаны да `Person.prototype`.
 
-In case of an explicit `return` statement, the function returns the value 
-specified by that statement, but **only** if the return value is an `Object`.
+Вярнуць яўнае значэнне праз `return, можна **толькі** калі гэта значэнне - `Object`.
 
     function Car() {
         return 'ford';
     }
-    new Car(); // a new object, not 'ford'
+    new Car(); // новы аб'ект, не 'ford'
 
     function Person() {
         this.someValue = 2;
@@ -39,23 +37,24 @@ specified by that statement, but **only** if the return value is an `Object`.
             name: 'Charles'
         };
     }
-    new Person(); // the returned object ({name:'Charles'}), not including someValue
+    new Person(); // вяртае аб'ект ({name:'Charles'}), які не ўтрымлівае someValue
 
-When the `new` keyword is omitted, the function will **not** return a new object. 
+Калі ключавое слова `new` прапушчана, функцыя **не** верне аб'ект.
 
     function Pirate() {
-        this.hasEyePatch = true; // gets set on the global object!
+        // пазначыць значэнне ў глабальным аб'екце!
+        this.hasEyePatch = true;
     }
-    var somePirate = Pirate(); // somePirate is undefined
+    var somePirate = Pirate(); // somePirate == undefined
 
-While the above example might still appear to work in some cases, due to the
-workings of [`this`](#function.this) in JavaScript, it will use the
-*global object* as the value of `this`.
+Гэты прыклад можа спрацаваць у некаторых выпадках, праз тое як працуе
+[`this`](#function.this) у JavaScript. Значэннем `this` тут будзе
+*глабальны аб'ект*.
 
-### Factories
+### Фабрыкі
 
-In order to be able to omit the `new` keyword, the constructor function has to 
-explicitly return a value.
+Каб мець магчымасць прапусціць ключавое слова `new`, канструктар функцыі мае яўна
+вяртаць значэнне.
 
     function Robot() {
         var color = 'gray';
@@ -69,25 +68,24 @@ explicitly return a value.
     new Robot();
     Robot();
 
-Both calls to `Robot` return the same thing, a newly created object that
-has a property called `getColor`, which is a 
-[Closure](#function.closures).
+Абодва выклікі `Robot` вернуць тое ж самае, новы аб'ект, які мае ўласцівасць
+`getColor`, што з'яўляецца [замыканнем](#function.closures).
 
-It should also be noted that the call `new Robot()` does **not** affect the
-prototype of the returned object. While the prototype will be set on the newly
-created object, `Robot` never returns that new object.
+Таксама варта адзначыць, што выклік `new Robot()` **не** ўплывае на прататып
+вернутага аб'екта. Хаця прататып будзе прызначаны новастворанаму аб'екту, `Robot`
+ніколі не верне гэты аб'ект.
 
-In the above example, there is no functional difference between using and
-not using the `new` keyword.
+У прыкладзе вышэй, няма розніцы паміж выклікам функцыі з аператарам `new` або
+без яго.
 
 
-### Creating New Objects via Factories
+### Стварэнне новых аб'ектаў з выкарыстаннем фабрык
 
-It is often recommended to **not** use `new` because forgetting its use may
-lead to bugs.
+Часта рэкамендуюць **не** выкарыстоўваць `new` бо забыўшыся выкарыстаць яго, можна
+стварыць памылку.
 
-In order to create a new object, one should rather use a factory and construct a 
-new object inside of that factory.
+Каб стварыць новы аб'ект, лепш выкарыстоўваць фабрыку і стварыць новы аб'ект
+*унутры фабрыкі*.
 
     function CarFactory() {
         var car = {};
@@ -106,22 +104,19 @@ new object inside of that factory.
         return car;
     }
 
-While the above is robust against a missing `new` keyword and certainly makes 
-the use of [private variables](#function.closures) easier, it comes with some 
-downsides.
+Хоць гэты прыклад і спрацуе негледзячы на забытае `new`, і бясспрэчна выкарыстоўвае
+[прыватныя пераменныя](#function.closures), ён мае некалькі недахопаў.
 
- 1. It uses more memory since the created objects do **not** share the methods
-    on a prototype.
- 2. In order to inherit, the factory needs to copy all the methods from another
-    object or put that object on the prototype of the new object.
- 3. Dropping the prototype chain just because of a left out `new` keyword
-    is contrary to the spirit of the language.
+ 1. Ён выкарыстоўвае больш памяці, бо функцыі створаных аб'ектаў **не** захоўваюццца
+    у прататыпе, а ствараюцца на нова для кожнага аб'екта.
+ 2. Каб эмуляваць спадкаемства, фабрыка мае скапіраваць метады іншага аб'екта, або
+    пазначыць прататыпам новага аб'екта стары.
+ 3. Разрыў ланцужка прататыпаў, проста па прычыне забытага ключавога слова `new`,
+    не адпавядае духу мовы JavaScript.
 
-### In Conclusion
+### У заключэнне
 
-While omitting the `new` keyword might lead to bugs, it is certainly **not** a
-reason to drop the use of prototypes altogether. In the end it comes down to
-which solution is better suited for the needs of the application. It is
-especially important to choose a specific style of object creation and use it
-**consistently**.
-
+Негледзячы на тое, што прапушчанае `new` можа выліцца ў памылку, гэта **не**
+прычына адмовіцца ад выкарыстання прататыпаў. У выніку лепш высвятліць якое рашэнне
+больш адпавядае патрабаванням праграмы. Асабліва важна выбраць пэўны стыль і
+**паслядоўна** выкарыстоўваць яго.
