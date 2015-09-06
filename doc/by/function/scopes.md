@@ -1,8 +1,8 @@
 ## Зоны бачнасці і прасторы імёнаў
 
 Негледзячы на тое, што JavaScript добра працуе з сінтаксісам фігурных дужак для
-блокаў, у ім **няма** няма падтрымкі блочнай зоны бачнасці; усё што ёсць на гэты
-выпадак у мове - *зона бачнасці функцыі*.
+блокаў, у ім **няма** падтрымкі блочнай зоны бачнасці; усё што ёсць на гэты конт
+у мове - *зона бачнасці функцыі*.
 
     function test() { // зона бачнасці
         for(var i = 0; i < 10; i++) { // не зона бачнасці
@@ -13,7 +13,7 @@
 
 > **Заўвага:** Калі не выкарыстана ў прысвойванні, аператары return або аргуменце
 > функцыі, натацыя `{...}` будзе інтэрпрэтавана як блочны выраз, а **не** як літэрал
-> аб'екта. Гэта з'ява, сумесна з[аўтаматычнай устаўкай коскі з кропкай](#core.semicolon),
+> аб'екта. Гэта з'ява, сумесна з [аўтаматычнай устаўкай коскі з кропкай](#core.semicolon),
 > можа прывесці да хітрых памылак.
 
 Таксама JavaScript не падтрымлівае выразныя прасторы імёнаў, усё аб'яўляецца ў
@@ -25,64 +25,62 @@
 
 ### Атрута глабальнымі пераменнымі
 
-    // script A
+    // скрыпт A
     foo = '42';
 
-    // script B
+    // скрыпт B
     var foo = '42'
 
-The above two scripts do **not** have the same effect. Script A defines a
-variable called `foo` in the *global* scope, and script B defines a `foo` in the
-*current* scope.
+Вышэйпрыведзеныя скрыпты **не** маюць розныя вынікі. Скрыпт A аб'яўляе пераменную
+`foo` у *глабальнай* зоне бачнасці, скрыпт B аб'яўляе `foo` у *актуальнай* зоне
+бачнасці.
 
-Again, that is **not** at all the *same effect*: not using `var` can have major
-implications.
+Паўторымся, гэта абсалютна **не** *той жа самы вынік*: не выкарыстоўваенне `var`
+можа мець сур'ёзныя наступствы.
 
-    // global scope
+    // глабальная зона бачнасці
     var foo = 42;
     function test() {
-        // local scope
+        // лакальная зона бачнасці
         foo = 21;
     }
     test();
     foo; // 21
 
-Leaving out the `var` statement inside the function `test` will override the
-value of `foo`. While this might not seem like a big deal at first, having
-thousands of lines of JavaScript and not using `var` will introduce horrible,
-hard-to-track-down bugs.
+З-за таго, што аператар `var` прапушчаны ўнутры функцыі `test`, значэнне `foo`
+у глабальнай прасторы імён будзе перазапісаным. Хаця першапачаткова гэта можа
+падацца невялікай праблемай, не выкарыстоўванне `var` у кодзе на тысячы радкоў,
+прывядзе да жахлівых, цяжкіх для адладкі памылак.
 
-    // global scope
-    var items = [/* some list */];
+    // глабальная прастора імёнаў
     for(var i = 0; i < 10; i++) {
         subLoop();
     }
 
     function subLoop() {
-        // scope of subLoop
-        for(i = 0; i < 10; i++) { // missing var statement
-            // do amazing stuff!
+        // прастора імёнаў subLoop
+        for(i = 0; i < 10; i++) { // аператар var прапушчаны
+            // робім чароўныя рэчы!
         }
     }
 
-The outer loop will terminate after the first call to `subLoop`,  since `subLoop`
-overwrites the global value of `i`. Using a `var` for the second `for` loop would
-have easily avoided this error. The `var` statement should **never** be left out
-unless the *desired effect* is to affect the outer scope.
+Знешні цыкл скончыцца пасля першага выкліка `subLoop`, бо `subLoop` перазапісвае
+глабальную пераменную `i`. Выкарыстоўваючы `var` для другога цыкла `for` можна
+было б пазбегнуць памылкі. **Ніколі** не прапускайце аператар `var`, акрамя
+выпадкаў, калі змена змена дадзеных у знешняй зоне бачнасці ёсць *пажаданым вынікам*.
 
-### Local Variables
+### Лакальныя пераменныя
 
-The only source for local variables in JavaScript are
-[function](#function.general) parameters and variables declared via the
-`var` statement.
+Адзіная крыніца лакальных пераменных у JavaScript гэта параметры [функцыі](#function.general)
+і пераменныя аб'яўленыя праз аператар `var`.
 
-    // global scope
+    // глабальная зона бачнасці
     var foo = 1;
     var bar = 2;
     var i = 2;
 
     function test(i) {
-        // local scope of the function test
+        // лакальная зона бачнасці функцыі test
         i = 5;
 
         var foo = 3;
@@ -90,13 +88,13 @@ The only source for local variables in JavaScript are
     }
     test(10);
 
-While `foo` and `i` are local variables inside the scope of the function `test`,
-the assignment of `bar` will override the global variable with the same name.
+`foo` і `i` гэта лакальныя пераменныя унутры зоны бачнасці функцыі `test`,
+а вось прызначэнне `bar` перазапіша глабальныю пераменную з тым жа іменем.
 
-### Hoisting
+### Падыманне
 
-JavaScript **hoists** declarations. This means that both `var` statements and
-`function` declarations will be moved to the top of their enclosing scope.
+JavaScript **падымае** аб'яўленні. Гэта азначае, што абодва аб'яўленні аператараў
+`var` і `function` падымуцца на верх іх зоны бачнасці.
 
     bar();
     var bar = function() {};
@@ -115,16 +113,15 @@ JavaScript **hoists** declarations. This means that both `var` statements and
         }
     }
 
-The above code gets transformed before execution starts. JavaScript moves
-the `var` statements, as well as `function` declarations, to the top of the
-nearest surrounding scope.
+Вышэйпрыведзены код трансфармуецца перад пачаткам выконвання. JavaScript падымае
+аператары `var`, як і аб'яўленне `function`, наверх бліжэйшай зоны бачнасці.
 
-    // var statements got moved here
-    var bar, someValue; // default to 'undefined'
+    // аператар var перамяшчаецца сюды
+    var bar, someValue; // па змоўчванню - 'undefined'
 
-    // the function declaration got moved up too
+    // аб'яўленне функцыі таксама падымаецца наверх
     function test(data) {
-        var goo, i, e; // missing block scope moves these here
+        var goo, i, e; // адсутная блочная зона бачнасці перайшла сюды
         if (false) {
             goo = 1;
 
@@ -136,97 +133,98 @@ nearest surrounding scope.
         }
     }
 
-    bar(); // fails with a TypeError since bar is still 'undefined'
-    someValue = 42; // assignments are not affected by hoisting
+    bar(); // падае з TypeError бо ўсё яшчэ 'undefined'
+    someValue = 42; // прысвойванні не падымаюцца
     bar = function() {};
 
     test();
 
-Missing block scoping will not only move `var` statements out of loops and
-their bodies, it will also make the results of certain `if` constructs
-non-intuitive.
+Адсутнасць блочнай зоны бачнасці не толькі падыме аператар `var` па-за межы цыкла
+і яго цела, але таскама зробіць вынік некаторых канструкцый `if` не-інтуітыўным.
 
-In the original code, although the `if` statement seemed to modify the *global
-variable* `goo`, it actually modifies the *local variable* - after hoisting
-has been applied.
+Хоць у арыгінальным кодзе падаецца што канструкцыя `if` змяняе *глабальную
+пераменную* `goo`, на дадзены момант гэта мяняе *лакальную пераменную* - пасля
+таго, як было прыменена падыманне.
 
-Without knowledge of *hoisting*, one might suspect the code below would raise a
-`ReferenceError`.
+Без ведаў аб *падыманні*, можна падумаць што код ніжэй кіне `ReferenceError`.
 
-    // check whether SomeImportantThing has been initialized
+    // правярае ці было SomeImportantThing праініцыалізавана
     if (!SomeImportantThing) {
         var SomeImportantThing = {};
     }
 
-But of course, this works due to the fact that the `var` statement is being
-moved to the top of the *global scope*.
+Але канешне, гэта працуе праз тое, што аператар `var` быў падняты на верх
+глабальнай *зоны бачнасці*.
 
     var SomeImportantThing;
 
-    // other code might initialize SomeImportantThing here, or not
+    // тут нейкі код можа ініцыалізаваць SomeImportantThing, або не
 
-    // make sure it's there
+    // тут у гэтым можна ўпэўніцца
     if (!SomeImportantThing) {
         SomeImportantThing = {};
     }
 
-### Name Resolution Order
+### Парадак доступу да пераменных
 
-All scopes in JavaScript, including the *global scope*, have the special name
-[`this`](#function.this), defined in them, which refers to the *current object*.
+Усе зоны бачнасці ў JavaScript, уключаючы *глабальную зону бачнасці*, маюць
+адмысловае імя [`this`](#function.this), аб'яўленае ўнутры іх, якое спасылаецца
+на *актуальны аб'ект*.
 
-Function scopes also have the name [`arguments`](#function.arguments), defined in
-them, which contains the arguments that were passed to the function.
+Зоны бачнасці функцый таксама маюць імя [`arguments`](#function.arguments),
+аб'яўленае ў іх, якое спасылаецца на аргументы, што былі перададзеныя ў функцыю.
 
-For example, when trying to access a variable named `foo` inside the scope of a
-function, JavaScript will look up the name in the following order:
+Напрыклад, калі паспрабаваць атрымаць доступ да пераменнай `foo` унутры зоны
+бачнасці функцыі, JavaScript будзе шукаць імя ў наступным парадку:
 
- 1. In case there is a `var foo` statement in the current scope, use that.
- 2. If one of the function parameters is named `foo`, use that.
- 3. If the function itself is called `foo`, use that.
- 4. Go to the next outer scope, and start with **#1** again.
+ 1. У выпадку калі прысутнічае канструкцыя `var foo` у актуальнай зоне бачнасці,
+ ён і выкарыстоўваецца.
+ 2. Калі параметр функцыі мае імя `foo`, ён будзе выкарыстаны.
+ 3. Калі сама функцыя называецца `foo`, яна будзе выкарыстана.
+ 4. Пераходзіць у знешнюю зону бачнасці, і пачынае з пункта **#1**.
 
-> **Note:** Having a parameter called `arguments` will **prevent** the creation
-> of the default `arguments` object.
+> **Заўвага:** Наява параметра названага `arguments` **перадухіліць** стварэнне
+> параметра `arguments` па змоўчванні.
 
-### Namespaces
+### Прасторы імёнаў
 
-A common problem associated with having only one global namespace is the
-likelihood of running into problems where variable names clash. In JavaScript,
-this problem can easily be avoided with the help of *anonymous wrappers*.
+Вялікая праблема, звязаная з выкарыстоўваннем глабальнай прасторы імёнаў, гэта
+высокая верагоднасць перасячэння імёнаў пераменных. У JavaScript, гэта праблема
+можа быць лёгка пазбегнута праз выкарыстанне *ананімных абгортак*.
 
     (function() {
-        // a self contained "namespace"
+        // аўтаномная "прастора імён"
 
         window.foo = function() {
-            // an exposed closure
+            // адкрытае замыканне
         };
 
-    })(); // execute the function immediately
+    })(); // імгненнае выкананне функцыі
 
 
-Unnamed functions are considered [expressions](#function.general); so in order to
-be callable, they must first be evaluated.
+Ананімныя функцыі з'яўляюцца [выразамі](#function.general); таму каб быць выкліканымі,
+яны спачатку маюць быць ацэненымі.
 
-    ( // evaluate the function inside the parentheses
+    ( // ацэньваем функцыю ўнутры дужак
     function() {}
-    ) // and return the function object
-    () // call the result of the evaluation
+    ) // вяртаем аб'ект функцыі
+    () // выклік выніку ацэнкі
 
-There are other ways to evaluate and directly call the function expression
-which, while different in syntax, behave the same way.
+Ёсць і іншыя спосабы ацаніць і імгненна выклікаць выраз функцыі, хаця яны і
+адрозніваюцца па сінтаксісу, паводзяць сябе аднолькава.
 
-    // A few other styles for directly invoking the
+    // Яшчэ некалькі спосабаў наўпрост выклікаць функцыю
     !function(){}()
     +function(){}()
     (function(){}());
-    // and so on...
+    // і так далей...
 
-### In Conclusion
+### Заключэнне
 
-It is recommended to always use an *anonymous wrapper* to encapsulate code in
-its own namespace. This does not only protect code against name clashes, but it
-also allows for better modularization of programs.
+Рэкамендуецца заўсёды выкарыстоўваць *ананімную абгортку* каб інкапсуліраваць код
+у яго асабістай прасторы імёнаў. Гэта не толькі абараняе код ад перасячэння імёнаў,
+але і дапамагае падзяляць праграму на модулі.
 
-Additionally, the use of global variables is considered **bad practice**. **Any**
-use of them indicates badly written code that is prone to errors and hard to maintain.
+Таксама выкарыстанне глабальных пераменных лічыцца **дрэннай практыкай**. **Любое**
+іх выкарыстоўванне - прыкмета дрэнна напісанага кода, схільнага да памылак, і цяжага
+ў падтрымцы.
