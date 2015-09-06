@@ -1,6 +1,6 @@
-## Why Not to Use `eval`
+## Чаму не варта выкарыстоўваць `eval`
 
-The `eval` function will execute a string of JavaScript code in the local scope.
+Функцыя `eval` выконвае радок JavaScript кода у лакальнай зоне бачнасці.
 
     var number = 1;
     function test() {
@@ -11,8 +11,8 @@ The `eval` function will execute a string of JavaScript code in the local scope.
     test(); // 3
     number; // 1
 
-However, `eval` only executes in the local scope when it is being called
-directly *and* when the name of the called function is actually `eval`.
+Але, `eval` выконваецца ў лакальнай прасторы імён у выпадку, калі яна была выклікана
+наўпрост *і* калі імя выкліканай функцыі `eval`.
 
     var number = 1;
     function test() {
@@ -24,24 +24,24 @@ directly *and* when the name of the called function is actually `eval`.
     test(); // 2
     number; // 3
 
-The use of `eval` should be avoided. 99.9% of its "uses" can be achieved
-**without** it.
-    
-### `eval` in Disguise
+Лепш пазбягаць выкарыстоўвання `eval`. 99.9% яе "выкарыстанняў" можа быць дасягнута
+**без** яе.
 
-The [timeout functions](#other.timeouts) `setTimeout` and `setInterval` can both 
-take a string as their first argument. This string will **always** get executed 
-in the global scope since `eval` is not being called directly in that case.
+### Схаваны `eval`
 
-### Security Issues
+Абедзьве [функцыі тайм-аўты](#other.timeouts) `setTimeout` і `setInterval` могуць
+прымаць радок у якасці першага аргумента. Гэты радок будзе **заўсёды** выконвацца
+ў глабальнай прасторы імёнаў, бо `eval` не выклікаецца наўпрост у дадзеным выпадку.
 
-`eval` also is a security problem, because it executes **any** code given to it.
-It should **never** be used with strings of unknown or untrusted origins.
+### Праблемы з бяспекаю
 
-### In Conclusion
+Таксама `eval` мае праблемы з бяспекаю, бо ён выконвае **любы** перададзены код.
+Таму яе **ніколі** не варта выкарыстоўваць з радкамі, што паходзяць з ненадзейных
+крыніцаў.
 
-`eval` should never be used. Any code that makes use of it should be questioned
-in its workings, performance and security. If something requires `eval` in
-order to work, it should **not** be used in the first place.  A *better design*
-should be used, that does not require the use of `eval`.
+### Заключэнне
 
+Лепш ніколі не выкарыстоўваць `eval`. Любы код, што выкарыстоўвае яе, спрэчны ў
+плане якасці, карэктнасці, вытворчасці і бяспекі. Калі для таго, каб нешта
+працавала патрэбны `eval`, **не** трэба прымаць гэта рашэнне ў першую чаргу.
+*лепшым рашэннем* было б тое, што не будзе выкарыстоўваць `eval`.
