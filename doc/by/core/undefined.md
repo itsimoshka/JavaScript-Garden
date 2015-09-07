@@ -1,54 +1,52 @@
-## `undefined` and `null`
+## `undefined` і `null`
 
-JavaScript has two distinct values for nothing, `null` and `undefined`, with
-the latter being more useful.
+JavaScript мае два розныя значэнні для 'нічога' - гэта `null` і `undefined`, пры
+гэтым апошняе больш карыснае.
 
-### The Value `undefined`
+### Значэнне `undefined`
 
-`undefined` is a type with exactly one value: `undefined`.
+`undefined` гэта тып з роўна адным значэннем: `undefined`.
 
-The language also defines a global variable that has the value of `undefined`;
-this variable is also called `undefined`. However, this variable is **neither** a constant
-nor a keyword of the language. This means that its *value* can be easily 
-overwritten.
+Мова таксама аб'яўляе глабальную пераменную, што мае значэнне `undefined`; Гэта
+пераменная таксама называецца `undefined`. Тым не менш, гэта пераменная, а **не**
+канстанта, ці ключавое слова. Гэта азначае, што яе *значэнне* можа быць
+з лёгкасцю перазапісаным.
 
-> **ES5 Note:** `undefined` in ECMAScript 5 is **no longer** *writable* in strict
-> mode, but its name can still be shadowed by for example a function with the name 
-> `undefined`.
+> **Заўвага для ES5:** у ECMAScript 5 `undefined` **больш** *не запісваемая* ў
+> строгім рэжыме, але гэта імя можа ўся яшчэ быць перакрыта праз выкарыстанне
+> функцыі з іменем `undefined`.
 
-Here are some examples of when the value `undefined` is returned:
+Ніжэй пералічаныя некалькі выпадкаў, калі вяртаецца `undefined`:
 
- - Accessing the (unmodified) global variable `undefined`.
- - Accessing a declared *but not* yet initialized variable.
- - Implicit returns of functions due to missing `return` statements.
- - `return` statements that do not explicitly return anything.
- - Lookups of non-existent properties.
- - Function parameters that do not have any explicit value passed.
- - Anything that has been set to the value of `undefined`.
- - Any expression in the form of `void(expression)`
+ - Доступ да (не мадыфікаванай) глабальнай пераменнай `undefined`.
+ - Доступ да аб'яўленай, *але яшчэ не* ініцыалізаванай пераменнай.
+ - Няяўна вернутае значэнне функцыі, праз адсутнасць аператара `return`.
+ - З аператара `return` які нічога яўна не вяртае.
+ - У выніку пошука неіснуючай уласцівасці аб'екта.
+ - Параметры функцыі якім яўна не было прысвоена значэнне.
+ - Усё, чаму было прысвоена значэнне `undefined`.
+ - Любы выраз у форме `void(expression)`
 
-### Handling Changes to the Value of `undefined`
+### Апрацоўка зменаў значэння `undefined`
 
-Since the global variable `undefined` only holds a copy of the actual *value* of 
-`undefined`, assigning a new value to it does **not** change the value of the 
-*type* `undefined`.
+Так як глабальная пераменная `undefined` утрымлівае толькі копію актуальнага *значэння*
+`undefined`, прысвойванне ёй новага значэння **не** мяняе значэнне *тыпа* `undefined`.
 
-Still, in order to compare something against the value of `undefined`, it is
-necessary to retrieve the value of `undefined` first.
+Таксама, для таго каб параўнаць што не будзь з значэннем `undefined`, спачатку
+трэба атрымаць значэнне `undefined`.
 
-To protect code against a possible overwritten `undefined` variable, a common
-technique used is to add an additional parameter to an [anonymous
-wrapper](#function.scopes) that gets no argument passed to it.
+Звыклая тэхніка абароны, ад магчымага перазапісвання пераменнай `undefined` -
+дадатковы параметр у [ананімнай абгорткцы](#function.scopes) што выкарыстоўвае
+адсутны аргумент.
 
     var undefined = 123;
     (function(something, foo, undefined) {
-        // undefined in the local scope does 
-        // now again refer to the value `undefined`
+        // цяпер undefined у лакальнай зоне бачнасці
+        // зноў спасылаецца на значэнне `undefined`
 
     })('Hello World', 42);
 
-Another way to achieve the same effect would be to use a declaration inside the 
-wrapper.
+Гэтага ж выніку можна дасягнуць праз аб'яўленне ўнутры абгорткі.
 
     var undefined = 123;
     (function(something, foo) {
@@ -57,18 +55,14 @@ wrapper.
 
     })('Hello World', 42);
 
-The only difference here is that this version results in 4 more bytes being
-used in case it is minified, and there is no other `var` statement inside the
-anonymous wrapper.
+Адзіная розніца ў тым, што гэта апошняя версія будзе большай на 4 байты пры
+мініфікацыі, а ў першым унутры ананімнай абгорткі не будзе аператара `var`.
 
-### Uses of `null`
+### Выкарыстоўванне `null`
 
-While `undefined` in the context of the JavaScript language is mostly used in
-the sense of a traditional *null*, the actual `null` (both a literal and a type)
-is more or less just another data type.
+Хаця `undefined` у кантэксце мовы JavaScript у асноўным выкарыстоўваецца ў сэнсе
+традыйнага *null*, сам `null` (і літэрал і тып) з'яўляецца яшчэ адным тыпам дадзеных.
 
-It is used in some JavaScript internals (like declaring the end of the
-prototype chain by setting `Foo.prototype = null`), but in almost all cases, it
-can be replaced by `undefined`.
-
-
+Выкарыстоўваецца ў некаторых унутранных механізмах JavaScript (напрыклад аб'яўленне
+канца ланцужка прататыпаў пазначаючы `Foo.prototype = null`), але амаль што ва ўсіх
+выпадках, ён можа быць заменены на `undefined`.
