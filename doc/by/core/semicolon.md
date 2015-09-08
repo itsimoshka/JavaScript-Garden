@@ -1,30 +1,28 @@
-## Automatic Semicolon Insertion
+## Аўтаматычная ўстаўка кропкі з коскай
 
-Although JavaScript has C style syntax, it does **not** enforce the use of
-semicolons in the source code, so it is possible to omit them.
+Хаця JavaScript мае C падобны сінтакс, ён **не** прымушае выкарыстоўваць кропку
+з коскай у кодзе, таму ёсць магчымасць прапускаць іх.
 
-JavaScript is not a semicolon-less language. In fact, it needs the 
-semicolons in order to understand the source code. Therefore, the JavaScript
-parser **automatically** inserts them whenever it encounters a parse
-error due to a missing semicolon.
-
-    var foo = function() {
-    } // parse error, semicolon expected
-    test()
-
-Insertion happens, and the parser tries again.
+Але JavaScript не мова без кропак з коскай. Насамрэч яны патрэбны ёй, каб разумець
+зыходны код. Таму, парсер JavaScript **аўтаматычна** ўстаўляе іх паўсюль, дзе
+сустракае памылку адсутнасці кропкі з коскай.
 
     var foo = function() {
-    }; // no error, parser continues
+    } // памылка разбора, парсер чакаў кропку з коскай
     test()
 
-The automatic insertion of semicolon is considered to be one of **biggest**
-design flaws in the language because it *can* change the behavior of code.
+Адбываецца ўстаўка, парсер спрабуе зноў.
 
-### How it Works
+    var foo = function() {
+    }; // памылкі няма, парсер працягвае
+    test()
 
-The code below has no semicolons in it, so it is up to the parser to decide where
-to insert them.
+Аўтаматычная ўстаўка кропкі з коскай, лічыцца адной з **найвялікшых** архітэктурных
+памылак у мове, бо *можа* змяніць паводзіны кода.
+
+### Як яно працуе
+
+Ніжэйпрыведзены код не мае кропак з коскай, таму парсер вырашае дзе іх уставіць.
 
     (function(window, undefined) {
         function test(options) {
@@ -53,62 +51,59 @@ to insert them.
 
     })(window)
 
-Below is the result of the parser's "guessing" game.
+Ніжэй вынік гульні парсера ў адгадванне.
 
     (function(window, undefined) {
         function test(options) {
 
-            // Not inserted, lines got merged
+            // Не ўстаўлена, радкі былі аб'яднаныя
             log('testing!')(options.list || []).forEach(function(i) {
 
-            }); // <- inserted
+            }); // <- устаўлена
 
             options.value.test(
                 'long string to pass here',
                 'and another long string to pass'
-            ); // <- inserted
+            ); // <- устаўлена
 
-            return; // <- inserted, breaks the return statement
-            { // treated as a block
-
-                // a label and a single expression statement
-                foo: function() {} 
-            }; // <- inserted
+            return; // <- устаўлена, разбіў аператар return на два блока
+            { // парсер лічыць гэты блок асобным
+                foo: function() {}
+            }; // <- устаўлена
         }
-        window.test = test; // <- inserted
+        window.test = test; // <- устаўлена
 
-    // The lines got merged again
+    // Радкі зноў аб'ядналіся
     })(window)(function(window) {
-        window.someLibrary = {}; // <- inserted
+        window.someLibrary = {}; // <- устаўлена
 
-    })(window); //<- inserted
+    })(window); //<- устаўлена
 
-> **Note:** The JavaScript parser does not "correctly" handle return statements 
-> that are followed by a new line. While this is not necessarily the fault of
-> the automatic semicolon insertion, it can still be an unwanted side-effect. 
+> **Заўвага:** Парсер JavaScript не апрацоўвае "карэктна" аператар return, калі
+> пасля яго пачынаецца новы радок. Магчыма прычына і не ў аўтаматычнай устаўцы
+> кропак з коскай, але гэта тым не менш непажаданы эфект.
 
-The parser drastically changed the behavior of the code above. In certain cases,
-it does the **wrong thing**.
+Парсер кардынальна памяняў паводзіны кода. У пэўных выпадках, ён прымае **памылковыя
+рашэнні**.
 
-### Leading Parenthesis
+### Вядучыя дужкі
 
-In case of a leading parenthesis, the parser will **not** insert a semicolon.
+У выпадку вядучай дужкі, парсер **не** уставіць кропку з коскай.
 
     log('testing!')
     (options.list || []).forEach(function(i) {})
 
-This code gets transformed into one line.
+Гэты код ператворыцца ў радок.
 
     log('testing!')(options.list || []).forEach(function(i) {})
 
-Chances are **very** high that `log` does **not** return a function; therefore,
-the above will yield a `TypeError` stating that `undefined is not a function`.
+**Вельмі** верагодна, што `log` **не** вяртае функцыю; Таму вышэйпрыведзены
+код справакуе `TypeError` з заявай што `undefined не з'яўляецца функцыяй`.
 
-### In Conclusion
+### Заключэнне
 
-It is highly recommended to **never** omit semicolons. It is also recommended
-that braces be kept on the same line as their corresponding statements and to
-never omit them for single-line `if` / `else` statements. These measures will
-not only improve the consistency of the code, but they will also prevent the
-JavaScript parser from changing code behavior.
-
+Крайне рэкамендуецца **ніколі** не прапускаць кропку з коскай. Таксама заўсёды
+рэкамендуецца, ставіць дужкі той жа лініі, што і адпаведныя канструкцыі, і ніколі
+не прапускаць іх у аднарадковых канструкцыях `if` / `else`. Гэтыя меры не толькі
+павысяць кансістэнтнасць кода, але таксама прадухіляць ад таго, што парсер
+JavaScript зменіць паводзіны кода.
