@@ -34,7 +34,7 @@ JavaScript не абараняе ўласцівасць `hasOwnProperty`; так
         hasOwnProperty: function() {
             return false;
         },
-        bar: 'Here be dragons'
+        bar: 'Тут жывуць драконы'
     };
 
     foo.hasOwnProperty('bar'); // заўсёды верне false
