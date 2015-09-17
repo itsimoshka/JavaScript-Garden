@@ -1,36 +1,37 @@
-## The `delete` Operator
+## Аператар `delete`
 
-In short, it's *impossible* to delete global variables, functions and some other
-stuff in JavaScript which have a `DontDelete` attribute set.
+у JavaScript *немагчыма* выдаліць глабальныя пераменныя, функцыі і некаторыя іншыя
+рэчы, што маюць атрыбут `DontDelete`.
 
-### Global code and Function code
+### Глабальны код і код функцый.
 
-When a variable or a function is defined in a global or a [function
-scope](#function.scopes) it is a property of either the Activation object or
-the Global object. Such properties have a set of attributes, one of which is
-`DontDelete`. Variable and function declarations in global and function code
-always create properties with `DontDelete`, and therefore cannot be deleted.
+Калі пераменная або функцыя аб'яўленыя глабальнай зоне бачнасці, або [зоне бачнасці
+функцыі](#function.scopes) то яна будзе ўласцівасцю або аб'екта актывацыі, або
+глабальнай зоны бачнасці. Такія ўласцівасці маюць набор атрыбутаў, адзін з іх
+`DontDelete`. Пераменныя і функцыі, аб'яўленыя у глабальнай зоне бачнасці і зоне
+бачнасці функцыі, заўсёды ствараюцца з уласцівасцю `DontDelete`, а таму не могуць
+выдаленыя.
 
-    // global variable:
-    var a = 1; // DontDelete is set
+    // глабальная пераменная:
+    var a = 1; // мае ўласцівасць DontDelete
     delete a; // false
     a; // 1
 
-    // normal function:
-    function f() {} // DontDelete is set
+    // звычайная функцыя:
+    function f() {} // мае ўласціваць DontDelete
     delete f; // false
     typeof f; // "function"
 
-    // reassigning doesn't help:
+    // перапрызначэнне не дапамагае:
     f = 1;
     delete f; // false
     f; // 1
 
-### Explicit properties
+### Яўна прызначаныя ўласцівасці
 
-Explicitly set properties can be deleted normally.
+Яўна прызначаныя ўласцівасці могуць быць лёгка выдаленыя.
 
-    // explicitly set property:
+    // яўна прызначаныя ўласцівасці:
     var obj = {x: 1};
     obj.y = 2;
     delete obj.x; // true
@@ -38,48 +39,43 @@ Explicitly set properties can be deleted normally.
     obj.x; // undefined
     obj.y; // undefined
 
-In the example above, `obj.x` and `obj.y` can be deleted because they have no 
-`DontDelete` attribute. That's why the example below works too.
+У вышэйпрыведзеным прыкладзе, `obj.x` і `obj.y` могуць быць выдаленыя бо не маюць
+атрыбута `DontDelete`. Таму і прыкад ніжэй працуе:
 
-    // this works fine, except for IE:
+    // Гэта працуе правільна, акрамя IE:
     var GLOBAL_OBJECT = this;
     GLOBAL_OBJECT.a = 1;
-    a === GLOBAL_OBJECT.a; // true - just a global var
+    a === GLOBAL_OBJECT.a; // true - глабальная пераменная
     delete GLOBAL_OBJECT.a; // true
     GLOBAL_OBJECT.a; // undefined
 
-Here we use a trick to delete `a`. [`this`](#function.this) here refers 
-to the Global object and we explicitly declare variable `a` as its property 
-which allows us to delete it.
+Гэта прыём каб выдаліць `a`. [`this`](#function.this) спасылаецца на глабальны
+аб'ект і мы яўна аб'яўляем пераменную `a` як яго ўласцівасць, што дазваляе нам
+выдаліць яе.
 
-IE (at least 6-8) has some bugs, so the code above doesn't work.
+IE (прынамсі 6-8) мае хібы, таму вышэйпрыведзены код там працаваць не будзе.
 
-### Function arguments and built-ins
+### Аргументы функцый і ўбудаваныя ўласцівасці
 
-Functions' normal arguments, [`arguments` objects](#function.arguments) 
-and built-in properties also have `DontDelete` set.
+Звычайныя аргументы функцыі, [аб'ект `arguments`](#function.arguments), а таксама
+убудаваныя ўласцівасці, таксама маюць атрыбут `DontDelete`.
 
-    // function arguments and properties:
+    // аргументы функцыі і ўласцівасці:
     (function (x) {
-    
+
       delete arguments; // false
       typeof arguments; // "object"
-      
+
       delete x; // false
       x; // 1
-      
+
       function f(){}
       delete f.length; // false
       typeof f.length; // "number"
-      
+
     })(1);
 
-### Host objects
-    
-The behaviour of `delete` operator can be unpredictable for hosted objects. Due
-to the specification, host objects are allowed to implement any kind of behavior. 
+### У заключэнне
 
-### In conclusion
-
-The `delete` operator often has unexpected behaviour and can only be safely
-used to delete explicitly set properties on normal objects.
+Аператар `delete` часта паводзіць сябе нечакана, таму адзінае надзейнае выкарыстанне
+`delete` - выдаленне яўна прызначаных уласцівасцяў.
